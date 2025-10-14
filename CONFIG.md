@@ -320,7 +320,7 @@ git push
 
 ## 🙏 Thank You!
 
-**Made with ❤️ for NSTDA**
+**Made with ❤️ for NIEMS**
 
 **Features:**
 - ✅ Production-ready SPA
