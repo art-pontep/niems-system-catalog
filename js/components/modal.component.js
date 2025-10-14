@@ -26,7 +26,7 @@ class ModalComponent {
                     this.currentData = systemData;
                 } else if (systemId) {
                     // Fallback: ถ้ายังส่ง ID มา (backward compatibility)
-                    loadingUtil.show('กำลังโหลดข้อมูลระบบ...', 'กรุณารอสักครู่');
+                    loadingUtil.show('Fetching system data...', 'Please wait a moment');
                     this.currentData = await apiService.getSystemById(systemId);
                     if (!this.currentData) {
                         throw new Error('System not found');
@@ -75,7 +75,7 @@ class ModalComponent {
                     this.currentData = requirementData;
                 } else if (requirementId) {
                     // Fallback: ถ้ายังส่ง ID มา (backward compatibility)
-                    loadingUtil.show('กำลังโหลดข้อมูลความต้องการ...', 'กรุณารอสักครู่');
+                    loadingUtil.show('Fetching requirement data...', 'Please wait a moment');
                     this.currentData = await apiService.getRequirementById(requirementId);
                     if (!this.currentData) {
                         throw new Error('Requirement not found');
@@ -254,6 +254,7 @@ class ModalComponent {
         // Load systems for dropdown
         let systemsOptions = '<option value="">Select System</option>';
         try {
+            loadingUtil.show('Fetching system data...', 'Please wait a moment');
             const systems = await apiService.getSystems();
             systemsOptions += systems.map(system => 
                 `<option value="${system.ID}" ${data['System ID'] === system.ID ? 'selected' : ''}>
@@ -262,6 +263,8 @@ class ModalComponent {
             ).join('');
         } catch (error) {
             console.error('Failed to load systems:', error);
+        } finally {
+            loadingUtil.hide();
         }
 
         return `
@@ -399,7 +402,7 @@ class ModalComponent {
             // Show global loading overlay to prevent all interactions
             loadingUtil.show(
                 this.isEditMode ? 'Updating system...' : 'Creating system...', 
-                'Please wait'
+                'Please wait a moment'
             );
 
             let result;
@@ -486,7 +489,7 @@ class ModalComponent {
             // Show global loading overlay to prevent all interactions
             loadingUtil.show(
                 this.isEditMode ? 'Updating requirement...' : 'Creating requirement...', 
-                'Please wait'
+                'Please wait a moment'
             );
 
             let result;

@@ -333,7 +333,7 @@ function handlePostRequest(sheet, headers, data, user) {
       if (requirementType === 'functional') {
         data.ID = getNextSequentialId(sheet, 'REQ');
       } else if (requirementType === 'non-functional') {
-        data.ID = getNextSequentialId(sheet, 'NONREQ');
+        data.ID = getNextSequentialId(sheet, 'NREQ');
       }
     }
   }
@@ -439,7 +439,7 @@ function handleDeleteRequest(sheet, headers, dataRows, data, user) {
     throw new Error("Sheet does not have an ID column");
   }
   
-  // Find the row index (Spreadsheet row index is deleteRowIndex + 2)
+  // Find the row index (Spreadsheet row index = deleteRowIndex + 2)
   const deleteRowIndex = dataRows.findIndex(row => row[idIndex] == data.ID);
   
   if (deleteRowIndex === -1) {
@@ -447,10 +447,16 @@ function handleDeleteRequest(sheet, headers, dataRows, data, user) {
   }
   
   try {
-    sheet.deleteRow(deleteRowIndex + 2); // +2 because of header row and 1-based indexing
+    // 1️⃣ Delete the main record
+    sheet.deleteRow(deleteRowIndex + 2); // +2 because of header and 1-based indexing
     
-    // Log deletion for audit trail
+    // 2️⃣ Log deletion
     logDeletion(user.email, data.ID, sheet.getName());
+
+    // 3️⃣ If deleting a system, cascade delete related requirements
+    if (sheet.getName().toLowerCase() === "systems") {
+      deleteAssociatedRequirements(data.ID, user);
+    }
     
     return { 
       success: true,
@@ -458,8 +464,34 @@ function handleDeleteRequest(sheet, headers, dataRows, data, user) {
       id: data.ID,
       timestamp: new Date().toISOString()
     };
+    
   } catch (error) {
     throw new Error(`Failed to delete record: ${error.message}`);
+  }
+}
+
+/**
+ * Deletes all requirements associated with a system ID
+ */
+function deleteAssociatedRequirements(systemID, user) {
+  const REQUIREMENTS_SHEET_NAME = "Requirements";
+  const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
+  const reqSheet = ss.getSheetByName(REQUIREMENTS_SHEET_NAME);
+  if (!reqSheet) return;
+
+  const reqData = reqSheet.getDataRange().getValues();
+  const rows = reqData.slice(1);
+
+
+  const idColIndex = 0;     // Requirement ID column A 
+  const systemColIndex = 1; // System ID is in column B 
+
+  // Loop backwards to safely delete rows
+  for (let i = rows.length - 1; i >= 0; i--) {
+    if (rows[i][systemColIndex] == systemID) {
+      reqSheet.deleteRow(i + 2); // +2 because header row
+      logDeletion(user.email, rows[i][idColIndex], "requirements");
+    }
   }
 }
 
@@ -734,25 +766,54 @@ function logAuthEvent(user, action, status, additionalInfo = {}) {
  * Applies recursively to objects and arrays.
  */
 function sanitizeInput(data) {
-  if (typeof data === 'string') {
-    // Basic sanitization: strip HTML and trim whitespace
-    return data.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
+  // Helper to sanitize a string
+  function sanitizeString(str) {
+    if (!str) return '';
+
+    // Trim and escape HTML special characters
+    str = str.trim()
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#x27;")
+      .replace(/\//g, "&#x2F;");
+
+    // Remove inline event handlers and dangerous patterns
+    str = str
+      .replace(/on\w+\s*=/gi, "")      // onclick, onerror, onload, etc.
+      .replace(/javascript:/gi, "")
+      .replace(/vbscript:/gi, "")
+      .replace(/expression\(/gi, "")    // CSS expression injection
+      .replace(/<script.*?>.*?<\/script>/gi, "")
+      .replace(/<style.*?>.*?<\/style>/gi, "")
+      .replace(/<iframe.*?>.*?<\/iframe>/gi, "");
+
+    return str;
   }
+
+  // Recursively handle arrays
   if (Array.isArray(data)) {
-    // Recursively sanitize array elements
     return data.map(sanitizeInput);
   }
+
+  // Recursively handle objects
   if (typeof data === 'object' && data !== null) {
-    // Recursively sanitize object properties
     const sanitizedObj = {};
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
+    for (var key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
         sanitizedObj[key] = sanitizeInput(data[key]);
       }
     }
     return sanitizedObj;
   }
-  // Return non-string/non-array/non-object values as is (e.g., numbers, booleans, null)
+
+  // Sanitize string
+  if (typeof data === 'string') {
+    return sanitizeString(data);
+  }
+
+  // Return other types (number, boolean, null) as-is
   return data;
 }
 

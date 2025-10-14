@@ -374,6 +374,10 @@ class App {
                     this.systems = this.systems.filter(s => s.ID !== id);
                     this.filterSystems();
                     this.renderDashboard();
+                    // Also remove related requirements
+                    this.requirements = this.requirements.filter(r => r['System ID'] !== id);
+                    this.filterRequirements();
+                    this.renderRequirements();
                     
                     this.showToast('System deleted successfully', 'success');
                 },
