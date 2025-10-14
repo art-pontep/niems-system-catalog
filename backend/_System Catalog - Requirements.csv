@@ -1,0 +1,5 @@
+ID,System ID,Title,Type,Priority,Status,Created Date,Created By,Last Updated,Last Updated By
+REQ-0001,INT-0001,จองห้องประชุมภายในองค์กรได้,functional,high,pending,2025-10-11T11:53:36.049Z,pontep.pre@gmail.com,2025-10-11T11:53:36.049Z,pontep.pre@gmail.com
+NONREQ-0001,INT-0001,ระบบล็อคอินด้วย google ได้,non-functional,medium,in-develop,2025-10-11T11:54:31.362Z,pontep.pre@gmail.com,2025-10-11T11:54:31.362Z,pontep.pre@gmail.com
+NONREQ-0002,INT-0001,ต้องมีหน้าตาที่สวยงามมากๆ,non-functional,low,done,2025-10-11T11:55:40.134Z,pontep.pre@gmail.com,2025-10-11T12:00:24.045Z,pontep.pre@gmail.com
+REQ-0002,EXT-0005,ลงทะเบียนวิทยุ,functional,higth,in-develop,2025-10-11T12:01:24.033Z,pontep.pre@gmail.com,2025-10-11T12:01:24.033Z,pontep.pre@gmail.com

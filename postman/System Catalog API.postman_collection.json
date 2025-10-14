@@ -1,0 +1,423 @@
+{
+	"info": {
+		"_postman_id": "5dc37ff3-84d6-4976-bf41-384e5cd4ba65",
+		"name": "System Catalog API",
+		"description": "Google Apps Script Backend API for System Catalog Dashboard\n\nAuthor: pontep presha\nVersion: 1.0\n\n**Authentication**: Requires Google OAuth ID Token\n\n**Base URL**: Your Google Apps Script Web App URL\n\n**Available Sheets**:\n- systems\n- documents\n- requirements",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49166982",
+		"_collection_link": "https://niems-develop.postman.co/workspace/System-Catalogs~d3b73049-559e-4a38-a947-bda8bc596a15/collection/49166982-5dc37ff3-84d6-4976-bf41-384e5cd4ba65?action=share&source=collection_link&creator=49166982"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Health Check (POST)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"action\": \"health\"\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Check API health status and database connection"
+					},
+					"response": []
+				},
+				{
+					"name": "Health Check (GET)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}?action=health",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"query": [
+								{
+									"key": "action",
+									"value": "health"
+								}
+							]
+						},
+						"description": "GET request for health check"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Systems",
+			"item": [
+				{
+					"name": "Get All Systems",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"method\": \"GET\",\n  \"sheet\": \"systems\",\n  \"idToken\": \"{{ID_TOKEN}}\"\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Retrieve all systems from the systems sheet"
+					},
+					"response": []
+				},
+				{
+					"name": "Get System by ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"method\": \"GET\",\n  \"sheet\": \"systems\",\n  \"idToken\": \"{{ID_TOKEN}}\",\n  \"data\": {\n    \"id\": \"1\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Get a specific system by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Create System",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"method\": \"POST\",\n  \"sheet\": \"systems\",\n  \"idToken\": \"{{ID_TOKEN}}\",\n  \"data\": {\n    \"Name\": \"การให้บริการคลาวด์สำหรับ NDEMS\",\n    \"Description\": \"การให้บริการคลาวด์สำหรับ NDEMS\",\n    \"Business Owner\": \"สพฉ.\",\n    \"Technical Owner\": \"iNET\",\n    \"Overall Status\": \"active\",\n    \"Category\": \"infrastructure\",\n    \"System Type\": \"external\",\n    \"Go Live Date\": \"2024-10-15\",\n    \"Goal\": \"โครงสร้างพื้นฐานสำหรับระบบดิจิทัลทั้งหมด (บริการ 24x7)\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Create a new system record"
+					},
+					"response": []
+				},
+				{
+					"name": "Update System",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"method\": \"PUT\",\n  \"sheet\": \"systems\",\n  \"idToken\": \"{{ID_TOKEN}}\",\n  \"data\": {\n    \"ID\": \"EXT-0001\",\n    \"Name\": \"การให้บริการคลาวด์สำหรับ NDEMS\",\n    \"Description\": \"การให้บริการคลาวด์สำหรับ NDEMS\",\n    \"Business Owner\": \"สพฉ.\",\n    \"Technical Owner\": \"iNET\",\n    \"Overall Status\": \"in-develop\",\n    \"Category\": \"infrastructure\",\n    \"System Type\": \"external\",\n    \"Go Live Date\": \"2024-10-15\",\n    \"Goal\": \"โครงสร้างพื้นฐานสำหรับระบบดิจิทัลทั้งหมด (บริการ 24x7)\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Update an existing system by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete System",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"method\": \"DELETE\",\n  \"sheet\": \"systems\",\n  \"idToken\": \"{{ID_TOKEN}}\",\n  \"data\": {\n    \"ID\": \"L0J4VH_ABCDE\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Delete a system by ID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Requirements",
+			"item": [
+				{
+					"name": "Get All Requirements",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"method\": \"GET\",\n  \"sheet\": \"requirements\",\n  \"idToken\": \"{{ID_TOKEN}}\"\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Retrieve all requirements"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Requirement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"method\": \"POST\",\n  \"sheet\": \"requirements\",\n  \"idToken\": \"{{ID_TOKEN}}\",\n  \"data\": {\n    \"System ID\" : \"INT-0001\",\n    \"Title\": \"ต้องมีหน้าตาที่สวยงาม\",\n    \"Priority\": \"low\",\n    \"Status\": \"done\",\n    \"Type\": \"non-functional\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Create a new requirement"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Requirement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"method\": \"PUT\",\n  \"sheet\": \"requirements\",\n  \"idToken\": \"{{ID_TOKEN}}\",\n  \"data\": {\n    \"ID\": \"NONREQ-0002\",\n    \"System ID\" : \"INT-0001\",\n    \"Title\": \"ต้องมีหน้าตาที่สวยงามมากๆ\",\n    \"Priority\": \"low\",\n    \"Status\": \"done\",\n    \"Type\": \"non-functional\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Update an existing requirement"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Requirement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"method\": \"DELETE\",\n  \"sheet\": \"requirements\",\n  \"idToken\": \"{{ID_TOKEN}}\",\n  \"data\": {\n    \"ID\": \"REQ-001\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Delete a requirement by ID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Documents",
+			"item": [
+				{
+					"name": "Get All Documents",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"method\": \"GET\",\n  \"sheet\": \"documents\",\n  \"idToken\": \"{{ID_TOKEN}}\"\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Retrieve all documents"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Document",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"method\": \"POST\",\n  \"sheet\": \"documents\",\n  \"idToken\": \"{{ID_TOKEN}}\",\n  \"data\": {\n    \"Name\": \"API Documentation\",\n    \"Document Type\": \"api-spec\",\n    \"Description\": \"API specification document\",\n    \"URL\": \"https://example.com/api-docs\",\n    \"System ID\": \"2\",\n    \"Version\": \"1.0\",\n    \"Status\": \"completed\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Create a new document record"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Document",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"method\": \"PUT\",\n  \"sheet\": \"documents\",\n  \"idToken\": \"{{ID_TOKEN}}\",\n  \"data\": {\n    \"ID\": \"DOC_12345\",\n    \"Name\": \"Updated Document Name\",\n    \"Status\": \"reviewed\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Update an existing document"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Document",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"method\": \"DELETE\",\n  \"sheet\": \"documents\",\n  \"idToken\": \"{{ID_TOKEN}}\",\n  \"data\": {\n    \"ID\": \"DOC_12345\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}",
+							"host": [
+								"{{BASE_URL}}"
+							]
+						},
+						"description": "Delete a document by ID"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"
+		},
+		{
+			"key": "ID_TOKEN",
+			"value": "YOUR_GOOGLE_ID_TOKEN_HERE"
+		}
+	]
+}

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Catalog | NIEMS</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234F46E5'/><path d='M30 25h40v15H30z' fill='white' opacity='0.9'/><path d='M30 45h40v15H30z' fill='white' opacity='0.7'/><path d='M30 65h40v15H30z' fill='white' opacity='0.5'/><circle cx='20' cy='32' r='4' fill='%2310B981'/><circle cx='20' cy='52' r='4' fill='%23F59E0B'/><circle cx='20' cy='72' r='4' fill='%23EF4444'/></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for Data Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Google Sign-In -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Loading Animation */
+        .loader {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        .loader-small {
+            border: 2px solid #f3f4f6;
+            border-top: 2px solid #3b82f6;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Pulse Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .animate-pulse-slow {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        /* Skeleton Loading */
+        .skeleton {
+            background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Loading Overlay */
+        .loading-overlay {
+            backdrop-filter: blur(2px);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* Disabled state during loading */
+        .loading-disabled {
+            pointer-events: none;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        /* Fade In Animation */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Modal Backdrop */
+        .modal-backdrop {
+            backdrop-filter: blur(4px);
+        }
+        
+        /* Status Badge Colors */
+        .status-active { background-color: #10b981; color: white; }
+        .status-in-develop { background-color: #3b82f6; color: white; }
+        .status-review { background-color: #f59e0b; color: white; }
+        .status-planing { background-color: #8b5cf6; color: white; }
+        .status-retired { background-color: #6b7280; color: white; }
+        .status-pending { background-color: #ef4444; color: white; }
+        .status-done { background-color: #10b981; color: white; }
+        
+        /* Priority Colors */
+        .priority-high { color: #dc2626; font-weight: 600; }
+        .priority-higth { color: #dc2626; font-weight: 600; } /* typo support */
+        .priority-medium { color: #f59e0b; font-weight: 600; }
+        .priority-low { color: #6b7280; font-weight: 500; }
+        
+        /* Card Hover Effect */
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Table Styles */
+        .table-container {
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+        }
+        
+        /* Navigation Active State */
+        .nav-item.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .nav-item {
+            transition: all 0.2s ease;
+        }
+        
+        .nav-item:hover {
+            background-color: #f1f5f9;
+        }
+        
+        .nav-item.active:hover {
+            background-color: #2563eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="loader mx-auto mb-4"></div>
+            <p class="text-gray-600">กำลังโหลด...</p>
+        </div>
+    </div>
+
+    <!-- Login Screen - Modern Google Style -->
+    <div id="loginScreen" class="hidden fixed inset-0 bg-white z-40">
+        <div class="min-h-screen flex">
+            <!-- Left Side - Branding -->
+            <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-12 flex-col justify-between relative overflow-hidden">
+                <!-- Background Pattern -->
+                <div class="absolute inset-0 opacity-10">
+                    <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/>
+                            </pattern>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#grid)" />
+                    </svg>
+                </div>
+                
+                <!-- Content -->
+                <div class="relative z-10">
+                    <div class="flex items-center gap-3 text-white mb-12">
+                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                        </svg>
+                        <h1 class="text-2xl font-bold">System Catalog</h1>
+                    </div>
+                    
+                    <div class="text-white space-y-6 max-w-md">
+                        <h2 class="text-4xl font-bold leading-tight">
+                            ระบบจัดการข้อมูล<br>
+                            ระบบงานและความต้องการ
+                        </h2>
+                        <p class="text-blue-100 text-lg">
+                            เครื่องมือบริหารจัดการข้อมูลระบบงาน ความต้องการ และการติดตามสถานะอย่างมีประสิทธิภาพ
+                        </p>
+                        
+                        <div class="space-y-4 pt-8">
+                            <div class="flex items-start gap-3">
+                                <svg class="w-6 h-6 text-green-300 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                                </svg>
+                                <div>
+                                    <p class="font-medium text-white">Dashboard แบบ Real-time</p>
+                                    <p class="text-sm text-blue-100">ติดตามสถานะและสถิติได้ทันที</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <svg class="w-6 h-6 text-green-300 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                                </svg>
+                                <div>
+                                    <p class="font-medium text-white">การจัดการที่ง่ายดาย</p>
+                                    <p class="text-sm text-blue-100">สร้าง แก้ไข ลบข้อมูลได้สะดวก</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <svg class="w-6 h-6 text-green-300 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                                </svg>
+                                <div>
+                                    <p class="font-medium text-white">ปลอดภัยด้วย Google OAuth</p>
+                                    <p class="text-sm text-blue-100">เข้าสู่ระบบด้วย Google Account</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <div class="relative z-10 text-blue-200 text-sm">
+                    <p>© 2025 System Catalog. All rights reserved.</p>
+                </div>
+            </div>
+            
+            <!-- Right Side - Login Form -->
+            <div class="flex-1 flex items-center justify-center p-8 bg-gray-50">
+                <div class="w-full max-w-md">
+                    <!-- Mobile Logo -->
+                    <div class="lg:hidden mb-8 text-center">
+                        <div class="inline-flex items-center gap-2 text-blue-600 mb-4">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                            </svg>
+                            <h1 class="text-2xl font-bold">System Catalog</h1>
+                        </div>
+                    </div>
+                    
+                    <!-- Login Card -->
+                    <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-gray-100">
+                        <div class="mb-8">
+                            <h2 class="text-3xl font-bold text-gray-900 mb-2">ยินดีต้อนรับ</h2>
+                            <p class="text-gray-600">เข้าสู่ระบบเพื่อดำเนินการต่อ</p>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <!-- Google Sign In Button -->
+                            <div id="googleSignInButton" class="flex justify-center"></div>
+                            
+                            <div class="relative">
+                                <div class="absolute inset-0 flex items-center">
+                                    <div class="w-full border-t border-gray-200"></div>
+                                </div>
+                                <div class="relative flex justify-center text-sm">
+                                    <span class="px-4 bg-white text-gray-500">หรือ</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Info Box -->
+                            <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                                <div class="flex items-start gap-3">
+                                    <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"/>
+                                    </svg>
+                                    <div class="text-sm text-blue-900">
+                                        <p class="font-medium mb-1">เข้าสู่ระบบด้วย Google Account</p>
+                                        <p class="text-blue-700">
+                                            ใช้บัญชี Google ขององค์กรหรือบัญชีส่วนตัวของคุณ
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Footer Links -->
+                        <div class="mt-8 pt-6 border-t border-gray-100 text-center text-sm text-gray-500">
+                            <p>
+                                มีปัญหาในการเข้าสู่ระบบ? 
+                                <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">ติดต่อผู้ดูแลระบบ</a>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Privacy Notice -->
+                    <p class="mt-6 text-center text-xs text-gray-500">
+                        การเข้าสู่ระบบแสดงว่าคุณยอมรับ
+                        <a href="#" class="text-blue-600 hover:underline">ข้อกำหนดการใช้งาน</a>
+                        และ
+                        <a href="#" class="text-blue-600 hover:underline">นโยบายความเป็นส่วนตัว</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Loading Overlay -->
+    <div id="globalLoading" class="hidden fixed inset-0 loading-overlay z-50 flex items-center justify-center">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm mx-4">
+            <div class="text-center">
+                <div class="loader mx-auto mb-4"></div>
+                <p id="loadingMessage" class="text-gray-700 font-medium mb-2">Fetching data...</p>
+                <p id="loadingSubMessage" class="text-sm text-gray-500">Please wait a moment</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Button Loading Spinner (Inline) -->
+    <template id="buttonLoadingTemplate">
+        <div class="inline-flex items-center">
+            <div class="loader-small mr-2"></div>
+            <span>กำลังดำเนินการ...</span>
+        </div>
+    </template>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="hidden">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <h1 class="text-2xl font-bold text-gray-900">System Catalog</h1>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-900" id="userName">Fetching data...</p>
+                            <p class="text-xs text-gray-500" id="userEmail">Fetching data...</p>
+                        </div>
+                        <img id="userAvatar" src="" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-gray-200">
+                        <button 
+                            onclick="app.logout()" 
+                            class="inline-flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg font-medium transition-colors"
+                            title="Logout"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="bg-white border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex space-x-2">
+                    <button onclick="app.navigateTo('dashboard', event)" class="nav-item px-6 py-3 text-sm font-medium rounded-t-lg active">
+                        📊 Dashboard
+                    </button>
+                    <button onclick="app.navigateTo('systems', event)" class="nav-item px-6 py-3 text-sm font-medium rounded-t-lg">
+                        🖥️ Systems
+                    </button>
+                    <button onclick="app.navigateTo('requirements', event)" class="nav-item px-6 py-3 text-sm font-medium rounded-t-lg">
+                        📋 Requirements
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Dashboard View -->
+            <div id="dashboardView" class="view-container">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="stat-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Total Systems</p>
+                                <p class="text-3xl font-bold text-gray-900 mt-2" id="totalSystems">0</p>
+                            </div>
+                            <div class="bg-blue-100 rounded-full p-3">
+                                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Active Systems</p>
+                                <p class="text-3xl font-bold text-green-600 mt-2" id="activeSystems">0</p>
+                            </div>
+                            <div class="bg-green-100 rounded-full p-3">
+                                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Total Requirements</p>
+                                <p class="text-3xl font-bold text-gray-900 mt-2" id="totalRequirements">0</p>
+                            </div>
+                            <div class="bg-purple-100 rounded-full p-3">
+                                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Completion Rate</p>
+                                <p class="text-3xl font-bold text-blue-600 mt-2" id="completionRate">0%</p>
+                            </div>
+                            <div class="bg-yellow-100 rounded-full p-3">
+                                <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Systems by Status</h3>
+                        <canvas id="systemsStatusChart"></canvas>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Requirements by Status</h3>
+                        <canvas id="requirementsStatusChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Systems Table with Requirements -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Systems Overview with Requirements Progress</h3>
+                    <div id="systemsOverviewTable" class="overflow-x-auto"></div>
+                </div>
+            </div>
+
+            <!-- Systems View -->
+            <div id="systemsView" class="view-container hidden">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-gray-900">Systems Management</h2>
+                        <button onclick="app.openModal('system')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition">
+                            + Add System
+                        </button>
+                    </div>
+
+                    <!-- Search and Filter -->
+                    <div class="mb-4 flex gap-4">
+                        <input 
+                            type="text" 
+                            id="systemsSearch" 
+                            placeholder="Search systems..." 
+                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            onkeyup="app.filterSystems()"
+                        >
+                        <select 
+                            id="systemsStatusFilter" 
+                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            onchange="app.filterSystems()"
+                        >
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="in-develop">In Development</option>
+                            <option value="review">Review</option>
+                            <option value="planing">Planning</option>
+                            <option value="retired">Retired</option>
+                        </select>
+                        <select 
+                            id="systemsCategoryFilter" 
+                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            onchange="app.filterSystems()"
+                        >
+                            <option value="">All Categories</option>
+                            <option value="core">Core</option>
+                            <option value="support">Support</option>
+                            <option value="infrastructure">Infrastructure</option>
+                        </select>
+                    </div>
+
+                    <!-- Systems Table -->
+                    <div id="systemsTable" class="overflow-x-auto table-container"></div>
+                </div>
+            </div>
+
+            <!-- Requirements View -->
+            <div id="requirementsView" class="view-container hidden">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-gray-900">Requirements Management</h2>
+                        <button onclick="app.openModal('requirement')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition">
+                            + Add Requirement
+                        </button>
+                    </div>
+
+                    <!-- Search and Filter -->
+                    <div class="mb-4 flex gap-4">
+                        <input 
+                            type="text" 
+                            id="requirementsSearch" 
+                            placeholder="Search requirements..." 
+                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            onkeyup="app.filterRequirements()"
+                        >
+                        <select 
+                            id="requirementsStatusFilter" 
+                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            onchange="app.filterRequirements()"
+                        >
+                            <option value="">All Status</option>
+                            <option value="done">Done</option>
+                            <option value="in-develop">In Development</option>
+                            <option value="pending">Pending</option>
+                        </select>
+                        <select 
+                            id="requirementsPriorityFilter" 
+                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                            onchange="app.filterRequirements()"
+                        >
+                            <option value="">All Priorities</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+
+                    <!-- Requirements Table -->
+                    <div id="requirementsTable" class="overflow-x-auto table-container"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Create/Edit -->
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-backdrop z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto fade-in">
+            <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+                <h3 id="modalTitle" class="text-xl font-bold text-gray-900">Modal Title</h3>
+                <button onclick="app.closeModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div id="modalContent" class="p-6">
+                <!-- Modal content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuration -->
+    <script src="js/config.js"></script>
+    
+    <!-- Utilities -->
+    <script src="js/utils/loading.util.js"></script>
+    <script src="js/utils/toast.util.js"></script>
+    
+    <!-- Services -->
+    <script src="js/services/auth.service.js"></script>
+    <script src="js/services/api.service.js"></script>
+    
+    <!-- Components -->
+    <script src="js/components/charts.component.js"></script>
+    <script src="js/components/table.component.js"></script>
+    <script src="js/components/modal.component.js"></script>
+    
+    <!-- Main Application -->
+    <script src="js/app.js"></script>
+</body>
+</html>
