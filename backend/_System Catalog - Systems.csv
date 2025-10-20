@@ -2,6 +2,6 @@ ID,Name,Description,Business Owner,Technical Owner,Overall Status,Category,Syste
 EXT-0001,การให้บริการคลาวด์สำหรับ NDEMS,การให้บริการคลาวด์สำหรับ NDEMS,สพฉ.,iNET,active,infrastructure,external,2024-10-15,โครงสร้างพื้นฐานสำหรับระบบดิจิทัลทั้งหมด (บริการ 24x7),2025-10-11T11:34:48.968Z,pontep.pre@gmail.com,2025-10-11T11:49:55.842Z,pontep.pre@gmail.com
 EXT-0002,ระบบการรับรองหน่วยฯ,ระบบการรับรองหน่วยฯ,สพฉ.,iNET,in-develop,core,external,2024-11-31,ฐานข้อมูลหน่วย,2025-10-11T11:38:42.563Z,pontep.pre@gmail.com,2025-10-11T11:38:42.563Z,pontep.pre@gmail.com
 EXT-0003,ระบบการรับรองยานพาหนะ,ระบบการรับรองยานพาหนะ,สพฉ.,iNET,review,core,external,2024-11-31,ลงทะเบียน/ตรวจสอบรถ,2025-10-11T11:41:43.552Z,pontep.pre@gmail.com,2025-10-11T11:41:43.552Z,pontep.pre@gmail.com
-EXT-0004,ระบบการรับรององค์กรฯ,ระบบการรับรององค์กรฯ,สพฉ.,iNET,planing,core,external,2024-11-31,ฐานข้อมูลองค์กร,2025-10-11T11:45:15.861Z,pontep.pre@gmail.com,2025-10-11T11:45:15.861Z,pontep.pre@gmail.com
+EXT-0004,ระบบการรับรององค์กรฯ,ระบบการรับรององค์กรฯ,สพฉ.,iNET,planning,core,external,2024-11-31,ฐานข้อมูลองค์กร,2025-10-11T11:45:15.861Z,pontep.pre@gmail.com,2025-10-11T11:45:15.861Z,pontep.pre@gmail.com
 EXT-0005,ระบบการรับรองวิทยุ,ระบบการรับรองวิทยุ,สพฉ.,iNET,retired,core,external,2024-11-31,ตรวจสอบ/อนุมัติการใช้,2025-10-11T11:47:13.713Z,pontep.pre@gmail.com,2025-10-11T11:47:13.713Z,pontep.pre@gmail.com
 INT-0001,ระบบจองห้องประชุม,ระบบจองห้องประชุม,สพฉ.,NSTDA,in-develop,support,internal,2024-11-31,จองห้องประชุมได้,2025-10-11T11:48:38.779Z,pontep.pre@gmail.com,2025-10-11T11:48:38.779Z,pontep.pre@gmail.com

@@ -233,7 +233,7 @@ const CONFIG = {
 | Description | String | ❌ | System description |
 | Business Owner | String | ❌ | Department/owner |
 | Technical Owner | String | ❌ | Technical team |
-| Overall Status | Enum | ❌ | active, in-develop, review, planing, retired |
+| Overall Status | Enum | ❌ | active, in-develop, review, planning, retired |
 | Category | Enum | ❌ | core, support, infrastructure |
 | System Type | Enum | ❌ | internal, external |
 | Go Live Date | Date | ❌ | Launch date |

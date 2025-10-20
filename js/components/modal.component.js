@@ -175,7 +175,7 @@ class ModalComponent {
                                 <option value="active" ${data['Overall Status'] === 'active' ? 'selected' : ''}>Active</option>
                                 <option value="in-develop" ${data['Overall Status'] === 'in-develop' ? 'selected' : ''}>In Development</option>
                                 <option value="review" ${data['Overall Status'] === 'review' ? 'selected' : ''}>Review</option>
-                                <option value="planing" ${data['Overall Status'] === 'planing' ? 'selected' : ''}>Planning</option>
+                                <option value="planning" ${data['Overall Status'] === 'planning' ? 'selected' : ''}>Planning</option>
                                 <option value="retired" ${data['Overall Status'] === 'retired' ? 'selected' : ''}>Retired</option>
                             </select>
                         </div>
