@@ -34,6 +34,7 @@ class ChartsComponent {
         // Prepare data
         const labels = Object.keys(statusCounts);
         const data = Object.values(statusCounts);
+        const total = data.reduce((sum, value) => sum + value, 0);
         const backgroundColors = labels.map(status => this.defaultColors[status] || '#94a3b8');
 
         // Destroy existing chart
@@ -71,8 +72,143 @@ class ChartsComponent {
                             label: function(context) {
                                 const label = context.label || '';
                                 const value = context.parsed || 0;
-                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = ((value / total) * 100).toFixed(1);
+                                const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0.0';
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Create internal systems by status chart
+     */
+    createInternalSystemsStatusChart(systems) {
+        const ctx = document.getElementById('internalSystemsStatusChart');
+        if (!ctx) return;
+
+        // Filter internal systems only
+        const internalSystems = systems.filter(s => s['System Type'] === 'internal');
+
+        // Count internal systems by status
+        const statusCounts = internalSystems.reduce((acc, system) => {
+            const status = system['Overall Status'] || 'unknown';
+            acc[status] = (acc[status] || 0) + 1;
+            return acc;
+        }, {});
+
+        // Prepare data
+        const labels = Object.keys(statusCounts);
+        const data = Object.values(statusCounts);
+        const total = data.reduce((sum, value) => sum + value, 0);
+        const backgroundColors = labels.map(status => this.defaultColors[status] || '#94a3b8');
+
+        // Destroy existing chart
+        if (this.charts.internalSystemsStatus) {
+            this.charts.internalSystemsStatus.destroy();
+        }
+
+        // Create new chart
+        this.charts.internalSystemsStatus = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels.map(s => this.formatStatusLabel(s)),
+                datasets: [{
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    borderWidth: 2,
+                    borderColor: '#ffffff',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: {
+                                size: 12,
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0.0';
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Create external systems by status chart
+     */
+    createExternalSystemsStatusChart(systems) {
+        const ctx = document.getElementById('externalSystemsStatusChart');
+        if (!ctx) return;
+
+        // Filter external systems only
+        const externalSystems = systems.filter(s => s['System Type'] === 'external');
+
+        // Count external systems by status
+        const statusCounts = externalSystems.reduce((acc, system) => {
+            const status = system['Overall Status'] || 'unknown';
+            acc[status] = (acc[status] || 0) + 1;
+            return acc;
+        }, {});
+
+        // Prepare data
+        const labels = Object.keys(statusCounts);
+        const data = Object.values(statusCounts);
+        const total = data.reduce((sum, value) => sum + value, 0);
+        const backgroundColors = labels.map(status => this.defaultColors[status] || '#94a3b8');
+
+        // Destroy existing chart
+        if (this.charts.externalSystemsStatus) {
+            this.charts.externalSystemsStatus.destroy();
+        }
+
+        // Create new chart
+        this.charts.externalSystemsStatus = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels.map(s => this.formatStatusLabel(s)),
+                datasets: [{
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    borderWidth: 2,
+                    borderColor: '#ffffff',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: {
+                                size: 12,
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0.0';
                                 return `${label}: ${value} (${percentage}%)`;
                             }
                         }
@@ -188,11 +324,96 @@ class ChartsComponent {
     }
 
     /**
+     * Create systems by type chart (Internal vs External)
+     */
+    createSystemsTypeChart(systems) {
+        const ctx = document.getElementById('systemsTypeChart');
+        if (!ctx) return;
+
+        // Count systems by type
+        const typeCounts = systems.reduce((acc, system) => {
+            const type = system['System Type'] || 'unknown';
+            acc[type] = (acc[type] || 0) + 1;
+            return acc;
+        }, {});
+
+        // Prepare data
+        const labels = Object.keys(typeCounts);
+        const data = Object.values(typeCounts);
+        const backgroundColors = labels.map(type => {
+            return type === 'internal' ? '#10b981' : 
+                   type === 'external' ? '#f59e0b' : '#94a3b8';
+        });
+
+        // Destroy existing chart
+        if (this.charts.systemsType) {
+            this.charts.systemsType.destroy();
+        }
+
+        // Create new chart
+        this.charts.systemsType = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels.map(s => this.formatTypeLabel(s)),
+                datasets: [{
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    borderWidth: 2,
+                    borderColor: '#ffffff',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 15,
+                            font: {
+                                size: 12,
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Format type label for display
+     */
+    formatTypeLabel(type) {
+        const labels = {
+            'internal': 'Internal',
+            'external': 'External',
+            'unknown': 'Unknown',
+        };
+        return labels[type] || type;
+    }
+
+    /**
      * Update charts with new data
      */
     updateCharts(systems, requirements) {
         this.createSystemsStatusChart(systems);
-        this.createRequirementsStatusChart(requirements);
+        this.createInternalSystemsStatusChart(systems);
+        this.createExternalSystemsStatusChart(systems);
+        // Remove the old internal vs external systems type chart
+        // this.createSystemsTypeChart(systems);
+        // Hide requirements chart per requirement
+        // this.createRequirementsStatusChart(requirements);
     }
 }
 

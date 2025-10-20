@@ -209,7 +209,7 @@ function doGet(e) {
       health: "GET /?action=health",
       api: "POST / with JSON body"
     },
-    documentation: "https://github.com/art-pontep/system-catalog/blob/main/postman/API_DOCUMENTATION.md"
+    documentation: "https://github.com/art-pontep/niems-system-catalog/blob/main/postman/API_DOCUMENTATION.md"
   });
 }
 
