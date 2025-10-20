@@ -9,7 +9,7 @@
 ### 📁 ไฟล์ที่สร้าง: **23 ไฟล์**
 
 ```
-system-catalog/
+niems-system-catalog/
 ├── 📄 HTML Files (1)
 │   ├── index.html                      # Main SPA
 
@@ -167,7 +167,7 @@ open http://localhost:8000
 git init
 git add .
 git commit -m "Initial commit"
-git remote add origin https://github.com/YOUR_USERNAME/system-catalog.git
+git remote add origin https://github.com/YOUR_USERNAME/niems-system-catalog.git
 git push -u origin main
 
 # 3. Enable GitHub Pages
@@ -176,7 +176,7 @@ git push -u origin main
 # 4. GitHub Actions will auto-deploy
 #    Check: Actions tab → Deploy to GitHub Pages workflow
 #    Wait 2-3 minutes
-#    Visit: https://YOUR_USERNAME.github.io/system-catalog/
+#    Visit: https://YOUR_USERNAME.github.io/niems-system-catalog/
 ```
 
 ---

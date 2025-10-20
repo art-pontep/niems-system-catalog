@@ -33,7 +33,7 @@
 ## 📁 Project Structure
 
 ```
-system-catalog/
+niems-system-catalog/
 ├── index.html                          # Main HTML file
 ├── README.md                           # This file
 ├── CONFIG.md                           # Configuration guide
@@ -73,8 +73,8 @@ system-catalog/
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/system-catalog.git
-cd system-catalog
+git clone https://github.com/YOUR_USERNAME/niems-system-catalog.git
+cd niems-system-catalog
 ```
 
 ### 2. Setup Google Apps Script Backend
@@ -159,7 +159,7 @@ git init
 git add .
 git commit -m "Initial commit"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/system-catalog.git
+git remote add origin https://github.com/YOUR_USERNAME/niems-system-catalog.git
 git push -u origin main
 ```
 
@@ -180,7 +180,7 @@ git push -u origin main
 **Deploy:**
 - GitHub Actions will automatically build and deploy on push to `main`
 - Check **Actions** tab to monitor deployment
-- Your app will be live at: `https://YOUR_USERNAME.github.io/system-catalog/`
+- Your app will be live at: `https://YOUR_USERNAME.github.io/niems-system-catalog/`
 
 **Security Note:**
 - `js/config.js` is gitignored (local development only)
