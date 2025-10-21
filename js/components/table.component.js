@@ -152,9 +152,9 @@ class TableComponent {
                     <thead class="bg-gray-50 sticky top-0">
                         <tr>
                             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden-mobile">Business Owner</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden-mobile">Goal</th>
                             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden-mobile">Technical Owner</th>
                             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden-mobile">Go Live</th>
                             <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -182,15 +182,15 @@ class TableComponent {
                 <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     ${this.escapeHtml(system.ID || '-')}
                 </td>
+                <td class="px-4 py-4 whitespace-nowrap">
+                    ${this.renderSystemTypeBadge(system['System Type'])}
+                </td>
                 <td class="px-4 py-4 text-sm text-gray-900">
                     <div class="font-medium">${this.escapeHtml(system.Name || '-')}</div>
                     <div class="text-gray-500 text-xs">${this.escapeHtml(system.Description || '').substring(0, 50)}${(system.Description || '').length > 50 ? '...' : ''}</div>
                 </td>
-                <td class="px-4 py-4 whitespace-nowrap">
-                    ${this.renderSystemTypeBadge(system['System Type'])}
-                </td>
                 <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 hidden-mobile">
-                    ${this.escapeHtml(system['Business Owner'] || '-')}
+                    ${this.escapeHtml(system['Goal'] || '-')}
                 </td>
                 <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 hidden-mobile">
                     ${this.escapeHtml(system['Technical Owner'] || '-')}
