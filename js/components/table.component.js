@@ -446,7 +446,16 @@ class TableComponent {
      */
     renderStatusBadge(status) {
         const statusClass = `status-${(status || 'unknown').toLowerCase()}`;
-        return `<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">${this.escapeHtml(status || 'Unknown')}</span>`;
+        const displayText = status === 'active' ? 'Active' :
+            status === 'uat' ? 'UAT' :
+            status === 'in-develop' ? 'In Development' :
+            status === 'planning' ? 'Planning' :
+            status === 'on-hold' ? 'On Hold' :
+            status === 'retired' ? 'Retired' : 
+            status === 'done' ? 'Done' : 
+            status === 'in-progress' ? 'In Progress' :
+            status === 'to-do' ? 'To Do' :(status || 'Unknown');
+        return `<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">${this.escapeHtml(displayText)}</span>`;
     }
 
     /**
@@ -454,7 +463,8 @@ class TableComponent {
      */
     renderTypeBadge(type) {
         const bgColor = type === 'functional' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800';
-        return `<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${bgColor}">${this.escapeHtml(type || '-')}</span>`;
+        const displayText = type === 'functional' ? 'Functional' : type === 'non-functional' ? 'Non-Functional' : (type || '-');
+        return `<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${bgColor}">${this.escapeHtml(displayText)}</span>`;
     }
 
     /**
@@ -462,7 +472,8 @@ class TableComponent {
      */
     renderPriorityBadge(priority) {
         const priorityClass = `priority-${(priority || 'low').toLowerCase()}`;
-        return `<span class="${priorityClass}">${this.escapeHtml(priority || 'Low')}</span>`;
+        const displayText = priority === 'high' ? 'High' : priority === 'medium' ? 'Medium' : 'Low';
+        return `<span class="${priorityClass}">${this.escapeHtml(displayText)}</span>`;
     }
 
     /**
