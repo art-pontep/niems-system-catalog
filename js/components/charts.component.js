@@ -7,13 +7,15 @@ class ChartsComponent {
     constructor() {
         this.charts = {};
         this.defaultColors = {
-            active: '#10b981',
+            'active': '#10b981',
             'in-develop': '#3b82f6',
-            review: '#f59e0b',
-            planning: '#8b5cf6',
-            retired: '#6b7280',
-            done: '#10b981',
-            pending: '#ef4444',
+            'uat': '#f59e0b',
+            'planning': '#8b5cf6',
+            'retired': '#6b7280',
+            'on-hold': '#ef4444',
+            'done': '#10b981',
+            'in-progress': '#3b82f6',
+            'to-do': '#6b7280',
         };
     }
 
@@ -301,11 +303,13 @@ class ChartsComponent {
         const labels = {
             'active': 'Active',
             'in-develop': 'In Development',
-            'review': 'Review',
+            'uat': 'UAT',
             'planning': 'Planning',
             'retired': 'Retired',
+            'on-hold': 'On Hold',
             'done': 'Done',
-            'pending': 'Pending',
+            'in-progress': 'In Progress',
+            'to-do': 'To Do',
             'unknown': 'Unknown',
         };
         return labels[status] || status;

@@ -173,9 +173,10 @@ class ModalComponent {
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                             >
                                 <option value="active" ${data['Overall Status'] === 'active' ? 'selected' : ''}>Active</option>
+                                <option value="uat" ${data['Overall Status'] === 'uat' ? 'selected' : ''}>UAT</option>
                                 <option value="in-develop" ${data['Overall Status'] === 'in-develop' ? 'selected' : ''}>In Development</option>
-                                <option value="review" ${data['Overall Status'] === 'review' ? 'selected' : ''}>Review</option>
                                 <option value="planning" ${data['Overall Status'] === 'planning' ? 'selected' : ''}>Planning</option>
+                                <option value="on-hold" ${data['Overall Status'] === 'on-hold' ? 'selected' : ''}>On Hold</option>
                                 <option value="retired" ${data['Overall Status'] === 'retired' ? 'selected' : ''}>Retired</option>
                             </select>
                         </div>
@@ -347,8 +348,8 @@ class ModalComponent {
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                             >
                                 <option value="done" ${data.Status === 'done' ? 'selected' : ''}>Done</option>
-                                <option value="in-develop" ${data.Status === 'in-develop' ? 'selected' : ''}>In Development</option>
-                                <option value="pending" ${data.Status === 'pending' ? 'selected' : ''}>Pending</option>
+                                <option value="in-progress" ${data.Status === 'in-progress' ? 'selected' : ''}>In Progress</option>
+                                <option value="to-do" ${data.Status === 'to-do' ? 'selected' : ''}>To Do</option>
                             </select>
                         </div>
                     </div>

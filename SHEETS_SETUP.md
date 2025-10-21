@@ -19,7 +19,7 @@
 | Description | รายละเอียดระบบ | Text | ❌ |
 | Business Owner | หน่วยงานเจ้าของ | Text | ❌ |
 | Technical Owner | ทีมเทคนิค | Text | ❌ |
-| Overall Status | สถานะ (active, in-develop, review, planning, retired) | Dropdown | ❌ |
+| Overall Status | สถานะ (active, uat, in-develop, planning, on-hold, retired) | Dropdown | ❌ |
 | Category | ประเภท (core, support, infrastructure) | Dropdown | ❌ |
 | System Type | ชนิด (internal, external) | Dropdown | ❌ |
 | Go Live Date | วันที่เปิดใช้งาน (YYYY-MM-DD) | Date | ❌ |

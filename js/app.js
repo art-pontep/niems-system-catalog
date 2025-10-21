@@ -189,8 +189,10 @@ class App {
         const totalSystems = this.systems.length;
         const activeSystems = this.systems.filter(s => s['Overall Status'] === 'active').length;
         const developSystems = this.systems.filter(s => s['Overall Status'] === 'in-develop').length;
-        const reviewSystems = this.systems.filter(s => s['Overall Status'] === 'review').length;
+        const uatSystems = this.systems.filter(s => s['Overall Status'] === 'uat').length;
         const planningSystems = this.systems.filter(s => s['Overall Status'] === 'planning').length;
+        const retiredSystems = this.systems.filter(s => s['Overall Status'] === 'retired').length;
+        const onHoldSystems = this.systems.filter(s => s['Overall Status'] === 'on-hold').length;
         
         const internalSystems = this.systems.filter(s => s['System Type'] === 'internal').length;
         const externalSystems = this.systems.filter(s => s['System Type'] === 'external').length;
@@ -198,21 +200,27 @@ class App {
         // Internal systems by status
         const internalActiveSystems = this.systems.filter(s => s['System Type'] === 'internal' && s['Overall Status'] === 'active').length;
         const internalDevelopSystems = this.systems.filter(s => s['System Type'] === 'internal' && s['Overall Status'] === 'in-develop').length;
-        const internalReviewSystems = this.systems.filter(s => s['System Type'] === 'internal' && s['Overall Status'] === 'review').length;
+        const internalUatSystems = this.systems.filter(s => s['System Type'] === 'internal' && s['Overall Status'] === 'uat').length;
         const internalPlanningSystems = this.systems.filter(s => s['System Type'] === 'internal' && s['Overall Status'] === 'planning').length;
+        const internalRetiredSystems = this.systems.filter(s => s['System Type'] === 'internal' && s['Overall Status'] === 'retired').length;
+        const internalOnHoldSystems = this.systems.filter(s => s['System Type'] === 'internal' && s['Overall Status'] === 'on-hold').length;
         
         // External systems by status
         const externalActiveSystems = this.systems.filter(s => s['System Type'] === 'external' && s['Overall Status'] === 'active').length;
         const externalDevelopSystems = this.systems.filter(s => s['System Type'] === 'external' && s['Overall Status'] === 'in-develop').length;
-        const externalReviewSystems = this.systems.filter(s => s['System Type'] === 'external' && s['Overall Status'] === 'review').length;
+        const externalUatSystems = this.systems.filter(s => s['System Type'] === 'external' && s['Overall Status'] === 'uat').length;
         const externalPlanningSystems = this.systems.filter(s => s['System Type'] === 'external' && s['Overall Status'] === 'planning').length;
+        const externalRetiredSystems = this.systems.filter(s => s['System Type'] === 'external' && s['Overall Status'] === 'retired').length;
+        const externalOnHoldSystems = this.systems.filter(s => s['System Type'] === 'external' && s['Overall Status'] === 'on-hold').length;
 
         // Update main stats
         document.getElementById('totalSystems').textContent = totalSystems;
         document.getElementById('activeSystems').textContent = activeSystems;
         document.getElementById('developSystems').textContent = developSystems;
-        document.getElementById('reviewSystems').textContent = reviewSystems;
+        document.getElementById('uatSystems').textContent = uatSystems;
         document.getElementById('planningSystems').textContent = planningSystems;
+        document.getElementById('retiredSystems').textContent = retiredSystems;
+        document.getElementById('onHoldSystems').textContent = onHoldSystems;
         
         document.getElementById('internalSystems').textContent = internalSystems;
         document.getElementById('externalSystems').textContent = externalSystems;
@@ -220,14 +228,18 @@ class App {
         // Update internal systems by status
         document.getElementById('internalActiveSystems').textContent = internalActiveSystems;
         document.getElementById('internalDevelopSystems').textContent = internalDevelopSystems;
-        document.getElementById('internalReviewSystems').textContent = internalReviewSystems;
+        document.getElementById('internalUatSystems').textContent = internalUatSystems;
         document.getElementById('internalPlanningSystems').textContent = internalPlanningSystems;
+        document.getElementById('internalRetiredSystems').textContent = internalRetiredSystems;
+        document.getElementById('internalOnHoldSystems').textContent = internalOnHoldSystems;
         
         // Update external systems by status
         document.getElementById('externalActiveSystems').textContent = externalActiveSystems;
         document.getElementById('externalDevelopSystems').textContent = externalDevelopSystems;
-        document.getElementById('externalReviewSystems').textContent = externalReviewSystems;
+        document.getElementById('externalUatSystems').textContent = externalUatSystems;
         document.getElementById('externalPlanningSystems').textContent = externalPlanningSystems;
+        document.getElementById('externalRetiredSystems').textContent = externalRetiredSystems;
+        document.getElementById('externalOnHoldSystems').textContent = externalOnHoldSystems;
 
         // Update charts with new layout
         chartsComponent.updateCharts(this.systems, this.requirements);
