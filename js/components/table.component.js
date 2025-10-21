@@ -31,13 +31,27 @@ class TableComponent {
             return;
         }
 
+        // const html = `
+        //     <table class="min-w-full divide-y divide-gray-200">
+        //         <thead class="bg-green-50">
+        //             <tr>
+        //                 <th class="px-3 py-2 text-left text-xs font-medium text-green-700 uppercase tracking-wider">System</th>
+        //                 <th class="px-3 py-2 text-center text-xs font-medium text-green-700 uppercase tracking-wider">Status</th>
+        //                 <th class="px-3 py-2 text-center text-xs font-medium text-green-700 uppercase tracking-wider">Requirements</th>
+        //             </tr>
+        //         </thead>
+        //         <tbody class="bg-white divide-y divide-gray-200">
+        //             ${internalSystems.map(system => this.renderSystemOverviewRow(system, requirements)).join('')}
+        //         </tbody>
+        //     </table>
+        // `;
+
         const html = `
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-green-50">
                     <tr>
                         <th class="px-3 py-2 text-left text-xs font-medium text-green-700 uppercase tracking-wider">System</th>
                         <th class="px-3 py-2 text-center text-xs font-medium text-green-700 uppercase tracking-wider">Status</th>
-                        <th class="px-3 py-2 text-center text-xs font-medium text-green-700 uppercase tracking-wider">Requirements</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -68,13 +82,27 @@ class TableComponent {
             return;
         }
 
+        // const html = `
+        //     <table class="min-w-full divide-y divide-gray-200">
+        //         <thead class="bg-orange-50">
+        //             <tr>
+        //                 <th class="px-3 py-2 text-left text-xs font-medium text-orange-700 uppercase tracking-wider">System</th>
+        //                 <th class="px-3 py-2 text-center text-xs font-medium text-orange-700 uppercase tracking-wider">Status</th>
+        //                 <th class="px-3 py-2 text-center text-xs font-medium text-orange-700 uppercase tracking-wider">Requirements</th>
+        //             </tr>
+        //         </thead>
+        //         <tbody class="bg-white divide-y divide-gray-200">
+        //             ${externalSystems.map(system => this.renderSystemOverviewRow(system, requirements)).join('')}
+        //         </tbody>
+        //     </table>
+        // `;
+
         const html = `
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-orange-50">
                     <tr>
                         <th class="px-3 py-2 text-left text-xs font-medium text-orange-700 uppercase tracking-wider">System</th>
                         <th class="px-3 py-2 text-center text-xs font-medium text-orange-700 uppercase tracking-wider">Status</th>
-                        <th class="px-3 py-2 text-center text-xs font-medium text-orange-700 uppercase tracking-wider">Requirements</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -95,6 +123,29 @@ class TableComponent {
         const completedRequirements = systemRequirements.filter(req => req.Status === 'done').length;
         const completionPercentage = totalRequirements > 0 ? Math.round((completedRequirements / totalRequirements) * 100) : 0;
 
+        // return `
+        //     <tr class="hover:bg-gray-50 transition">
+        //         <td class="px-3 py-3">
+        //             <div>
+        //                 <div class="text-sm font-medium text-gray-900">${this.escapeHtml(system.Name || '-')}</div>
+        //                 <div class="text-xs text-gray-500">${this.escapeHtml(system.ID || '-')}</div>
+        //             </div>
+        //         </td>
+        //         <td class="px-3 py-3 text-center">
+        //             ${this.renderStatusBadge(system['Overall Status'])}
+        //         </td>
+        //         <td class="px-3 py-3 text-center">
+        //             <div class="flex items-center justify-center">
+        //                 <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+        //                     <div class="bg-blue-500 h-2 rounded-full" style="width: ${completionPercentage}%"></div>
+        //                 </div>
+        //                 <span class="text-xs font-medium text-gray-600">${completedRequirements}/${totalRequirements}</span>
+        //             </div>
+        //             <div class="text-xs text-gray-500 mt-1">${completionPercentage}%</div>
+        //         </td>
+        //     </tr>
+        // `;
+
         return `
             <tr class="hover:bg-gray-50 transition">
                 <td class="px-3 py-3">
@@ -105,15 +156,6 @@ class TableComponent {
                 </td>
                 <td class="px-3 py-3 text-center">
                     ${this.renderStatusBadge(system['Overall Status'])}
-                </td>
-                <td class="px-3 py-3 text-center">
-                    <div class="flex items-center justify-center">
-                        <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
-                            <div class="bg-blue-500 h-2 rounded-full" style="width: ${completionPercentage}%"></div>
-                        </div>
-                        <span class="text-xs font-medium text-gray-600">${completedRequirements}/${totalRequirements}</span>
-                    </div>
-                    <div class="text-xs text-gray-500 mt-1">${completionPercentage}%</div>
                 </td>
             </tr>
         `;
