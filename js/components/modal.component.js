@@ -175,7 +175,7 @@ class ModalComponent {
                                 <option value="active" ${data['Overall Status'] === 'active' ? 'selected' : ''}>Active</option>
                                 <option value="in-develop" ${data['Overall Status'] === 'in-develop' ? 'selected' : ''}>In Development</option>
                                 <option value="review" ${data['Overall Status'] === 'review' ? 'selected' : ''}>Review</option>
-                                <option value="planing" ${data['Overall Status'] === 'planing' ? 'selected' : ''}>Planning</option>
+                                <option value="planning" ${data['Overall Status'] === 'planning' ? 'selected' : ''}>Planning</option>
                                 <option value="retired" ${data['Overall Status'] === 'retired' ? 'selected' : ''}>Retired</option>
                             </select>
                         </div>
@@ -185,6 +185,7 @@ class ModalComponent {
                                 name="Category" 
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                             >
+                                <option value="">Select Category</option>
                                 <option value="core" ${data.Category === 'core' ? 'selected' : ''}>Core</option>
                                 <option value="support" ${data.Category === 'support' ? 'selected' : ''}>Support</option>
                                 <option value="infrastructure" ${data.Category === 'infrastructure' ? 'selected' : ''}>Infrastructure</option>
@@ -195,7 +196,9 @@ class ModalComponent {
                             <select 
                                 name="System Type" 
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                required
                             >
+                                <option value="">Select System Type</option>
                                 <option value="internal" ${data['System Type'] === 'internal' ? 'selected' : ''}>Internal</option>
                                 <option value="external" ${data['System Type'] === 'external' ? 'selected' : ''}>External</option>
                             </select>
@@ -253,12 +256,13 @@ class ModalComponent {
 
         // Load systems for dropdown
         let systemsOptions = '<option value="">Select System</option>';
+        let systems = [];
         try {
             loadingUtil.show('Fetching system data...', 'Please wait a moment');
-            const systems = await apiService.getSystems();
+            systems = await apiService.getSystems();
             systemsOptions += systems.map(system => 
                 `<option value="${system.ID}" ${data['System ID'] === system.ID ? 'selected' : ''}>
-                    ${this.escapeHtml(system.ID)} - ${this.escapeHtml(system.Name)}
+                    ${this.escapeHtml(system.ID)} - ${this.escapeHtml(system.Name || 'Unnamed System')} (${this.escapeHtml(system['System Type'] || 'Unknown')})
                 </option>`
             ).join('');
         } catch (error) {
@@ -270,18 +274,33 @@ class ModalComponent {
         return `
             <form id="requirementForm" onsubmit="modalComponent.submitRequirementForm(event)">
                 <div class="space-y-4">
-                    <!-- System ID -->
+                    <!-- System ID with Searchable Dropdown -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">
                             System <span class="text-red-500">*</span>
                         </label>
-                        <select 
-                            name="System ID" 
-                            required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                        >
-                            ${systemsOptions}
-                        </select>
+                        <div class="relative">
+                            <div class="searchable-dropdown">
+                                <input 
+                                    type="text" 
+                                    id="systemSearchInput"
+                                    placeholder="Search and select system..."
+                                    autocomplete="off"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    onfocus="modalComponent.showSystemDropdown()"
+                                    onkeyup="modalComponent.filterSystemOptions()"
+                                    onblur="setTimeout(() => modalComponent.hideSystemDropdown(), 150)"
+                                >
+                                <input type="hidden" name="System ID" id="selectedSystemId" required>
+                                <div 
+                                    id="systemDropdownList" 
+                                    class="hidden absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto mt-1"
+                                >
+                                    <!-- Options will be populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Type to search for a system by ID or name</p>
                     </div>
 
                     <!-- Title -->
@@ -594,6 +613,148 @@ class ModalComponent {
             return `${year}-${month}-${day}`;
         } catch (error) {
             return '';
+        }
+    }
+
+    /**
+     * Filter system options based on search input (for new searchable dropdown)
+     */
+    filterSystemOptions() {
+        const searchInput = document.getElementById('systemSearchInput');
+        const dropdownList = document.getElementById('systemDropdownList');
+        
+        if (!searchInput || !dropdownList) return;
+        
+        const searchValue = searchInput.value.toLowerCase();
+        const options = dropdownList.querySelectorAll('.dropdown-option');
+        let hasVisibleOptions = false;
+        
+        options.forEach(option => {
+            const optionText = option.textContent.toLowerCase();
+            if (optionText.includes(searchValue)) {
+                option.style.display = '';
+                hasVisibleOptions = true;
+            } else {
+                option.style.display = 'none';
+            }
+        });
+        
+        // Show dropdown if there are visible options and input is focused
+        if (hasVisibleOptions && document.activeElement === searchInput) {
+            dropdownList.classList.remove('hidden');
+        } else if (!hasVisibleOptions) {
+            dropdownList.classList.add('hidden');
+        }
+    }
+
+    /**
+     * Show system dropdown
+     */
+    showSystemDropdown() {
+        const dropdownList = document.getElementById('systemDropdownList');
+        const searchInput = document.getElementById('systemSearchInput');
+        
+        if (!dropdownList || !searchInput) return;
+        
+        // Populate dropdown if empty
+        if (dropdownList.children.length === 0) {
+            this.populateSystemDropdown();
+        }
+        
+        dropdownList.classList.remove('hidden');
+    }
+
+    /**
+     * Hide system dropdown
+     */
+    hideSystemDropdown() {
+        const dropdownList = document.getElementById('systemDropdownList');
+        if (dropdownList) {
+            dropdownList.classList.add('hidden');
+        }
+    }
+
+    /**
+     * Populate system dropdown with options
+     */
+    async populateSystemDropdown() {
+        const dropdownList = document.getElementById('systemDropdownList');
+        if (!dropdownList) return;
+        
+        try {
+            const systems = await apiService.getSystems();
+            const currentData = this.currentData || {};
+            
+            // Clear existing options
+            dropdownList.innerHTML = '';
+            
+            systems.forEach(system => {
+                const option = document.createElement('div');
+                option.className = 'dropdown-option px-4 py-2 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0';
+                option.setAttribute('data-value', system.ID);
+                
+                const isSelected = currentData['System ID'] === system.ID;
+                if (isSelected) {
+                    option.classList.add('bg-blue-100');
+                }
+                
+                option.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="font-medium text-gray-900">${this.escapeHtml(system.ID)}</span>
+                            <span class="text-gray-600">- ${this.escapeHtml(system.Name || 'Unnamed System')}</span>
+                        </div>
+                        <span class="text-xs px-2 py-1 rounded ${
+                            system['System Type'] === 'internal' 
+                                ? 'bg-green-100 text-green-800' 
+                                : 'bg-orange-100 text-orange-800'
+                        }">
+                            ${this.escapeHtml(system['System Type'] || 'Unknown')}
+                        </span>
+                    </div>
+                `;
+                
+                option.onclick = () => this.selectSystem(system);
+                dropdownList.appendChild(option);
+                
+                // Set initial value if editing
+                if (isSelected) {
+                    this.selectSystem(system, false);
+                }
+            });
+            
+        } catch (error) {
+            console.error('Failed to populate system dropdown:', error);
+            dropdownList.innerHTML = '<div class="px-4 py-2 text-red-600 text-sm">Failed to load systems</div>';
+        }
+    }
+
+    /**
+     * Select a system from dropdown
+     */
+    selectSystem(system, hideDropdown = true) {
+        const searchInput = document.getElementById('systemSearchInput');
+        const hiddenInput = document.getElementById('selectedSystemId');
+        const dropdownList = document.getElementById('systemDropdownList');
+        
+        if (searchInput && hiddenInput) {
+            searchInput.value = `${system.ID} - ${system.Name || 'Unnamed System'} (${system['System Type'] || 'Unknown'})`;
+            hiddenInput.value = system.ID;
+            
+            // Update visual selection
+            if (dropdownList) {
+                dropdownList.querySelectorAll('.dropdown-option').forEach(opt => {
+                    opt.classList.remove('bg-blue-100');
+                });
+                const selectedOption = dropdownList.querySelector(`[data-value="${system.ID}"]`);
+                if (selectedOption) {
+                    selectedOption.classList.add('bg-blue-100');
+                }
+            }
+        }
+        
+        if (hideDropdown && dropdownList) {
+            dropdownList.classList.add('hidden');
         }
     }
 

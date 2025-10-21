@@ -124,7 +124,7 @@
         .status-active { background-color: #10b981; color: white; }
         .status-in-develop { background-color: #3b82f6; color: white; }
         .status-review { background-color: #f59e0b; color: white; }
-        .status-planing { background-color: #8b5cf6; color: white; }
+        .status-planning { background-color: #8b5cf6; color: white; }
         .status-retired { background-color: #6b7280; color: white; }
         .status-pending { background-color: #ef4444; color: white; }
         .status-done { background-color: #10b981; color: white; }
@@ -151,6 +151,84 @@
             overflow-y: auto;
         }
         
+        /* Responsive Table */
+        @media (max-width: 768px) {
+            .table-responsive {
+                font-size: 0.875rem;
+            }
+            
+            .table-responsive th,
+            .table-responsive td {
+                padding: 0.5rem 0.25rem;
+            }
+            
+            .table-responsive .hidden-mobile {
+                display: none;
+            }
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .pagination button {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            background: #f3f4f6;
+            border-color: #9ca3af;
+        }
+        
+        .pagination button.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .pagination select {
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            background: white;
+        }
+        
+        /* System Type Badge */
+        .type-internal {
+            background-color: #10b981;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .type-external {
+            background-color: #f59e0b;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
         /* Navigation Active State */
         .nav-item.active {
             background-color: #3b82f6;
@@ -167,6 +245,119 @@
         
         .nav-item.active:hover {
             background-color: #2563eb;
+        }
+        
+        /* Searchable Dropdown Styles */
+        .searchable-dropdown {
+            position: relative;
+        }
+        
+        .dropdown-option {
+            transition: background-color 0.2s ease;
+        }
+        
+        .dropdown-option:hover {
+            background-color: #eff6ff !important;
+        }
+        
+        .dropdown-option.selected {
+            background-color: #dbeafe !important;
+        }
+        
+        /* Improved Chart Container */
+        .chart-container {
+            position: relative;
+            height: 280px;
+            width: 100%;
+        }
+        
+        /* Dashboard Card Improvements */
+        .dashboard-card {
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Improved Stat Cards */
+        .stat-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.12), 0 8px 16px -8px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Chart Card Enhancements */
+        .chart-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        
+        .chart-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1), 0 6px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Chart titles with better typography */
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Mini stat improvements */
+        .mini-stat {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            transition: all 0.2s ease;
+        }
+        
+        .mini-stat:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.02);
+        }
+        
+        /* Section headers */
+        .section-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid #cbd5e1;
+            border-radius: 0.75rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        /* Overview table cards */
+        .overview-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .overview-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -393,13 +584,25 @@
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <!-- Dashboard View -->
             <div id="dashboardView" class="view-container">
+                <!-- Page Header -->
+                <div class="section-header">
+                    <div class="section-title">
+                        <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        System Catalog Dashboard
+                    </div>
+                    <p class="text-sm text-slate-600 mt-2">Overview of all systems, their statuses, and key metrics</p>
+                </div>
+
                 <!-- Stats Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="stat-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                        <div class="flex items-center justify-between">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Total Systems by Status -->
+                    <div class="dashboard-card stat-card bg-white rounded-xl shadow-sm border border-blue-200 p-6">
+                        <div class="flex items-center justify-between mb-4">
                             <div>
-                                <p class="text-sm font-medium text-gray-600">Total Systems</p>
-                                <p class="text-3xl font-bold text-gray-900 mt-2" id="totalSystems">0</p>
+                                <p class="text-sm font-medium text-blue-700">Total Systems</p>
+                                <p class="text-3xl font-bold text-blue-600 mt-2" id="totalSystems">0</p>
                             </div>
                             <div class="bg-blue-100 rounded-full p-3">
                                 <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -407,68 +610,174 @@
                                 </svg>
                             </div>
                         </div>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="mini-stat bg-green-50 p-2 rounded">
+                                <span class="text-green-700 font-medium">Active: </span>
+                                <span class="text-green-800 font-bold" id="activeSystems">0</span>
+                            </div>
+                            <div class="mini-stat bg-blue-50 p-2 rounded">
+                                <span class="text-blue-700 font-medium">Dev: </span>
+                                <span class="text-blue-800 font-bold" id="developSystems">0</span>
+                            </div>
+                            <div class="mini-stat bg-yellow-50 p-2 rounded">
+                                <span class="text-yellow-700 font-medium">Review: </span>
+                                <span class="text-yellow-800 font-bold" id="reviewSystems">0</span>
+                            </div>
+                            <div class="mini-stat bg-purple-50 p-2 rounded">
+                                <span class="text-purple-700 font-medium">Plan: </span>
+                                <span class="text-purple-800 font-bold" id="planningSystems">0</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="stat-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                        <div class="flex items-center justify-between">
+                    <!-- Internal Systems by Status -->
+                    <div class="dashboard-card stat-card bg-white rounded-xl shadow-sm border border-green-200 p-6">
+                        <div class="flex items-center justify-between mb-4">
                             <div>
-                                <p class="text-sm font-medium text-gray-600">Active Systems</p>
-                                <p class="text-3xl font-bold text-green-600 mt-2" id="activeSystems">0</p>
+                                <p class="text-sm font-medium text-green-700">Internal Systems</p>
+                                <p class="text-3xl font-bold text-green-600 mt-2" id="internalSystems">0</p>
                             </div>
                             <div class="bg-green-100 rounded-full p-3">
                                 <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                 </svg>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="mini-stat bg-green-50 p-2 rounded">
+                                <span class="text-green-700 font-medium">Active: </span>
+                                <span class="text-green-800 font-bold" id="internalActiveSystems">0</span>
+                            </div>
+                            <div class="mini-stat bg-blue-50 p-2 rounded">
+                                <span class="text-blue-700 font-medium">Dev: </span>
+                                <span class="text-blue-800 font-bold" id="internalDevelopSystems">0</span>
+                            </div>
+                            <div class="mini-stat bg-yellow-50 p-2 rounded">
+                                <span class="text-yellow-700 font-medium">Review: </span>
+                                <span class="text-yellow-800 font-bold" id="internalReviewSystems">0</span>
+                            </div>
+                            <div class="mini-stat bg-purple-50 p-2 rounded">
+                                <span class="text-purple-700 font-medium">Plan: </span>
+                                <span class="text-purple-800 font-bold" id="internalPlanningSystems">0</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="stat-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                        <div class="flex items-center justify-between">
+                    <!-- External Systems by Status -->
+                    <div class="dashboard-card stat-card bg-white rounded-xl shadow-sm border border-orange-200 p-6">
+                        <div class="flex items-center justify-between mb-4">
                             <div>
-                                <p class="text-sm font-medium text-gray-600">Total Requirements</p>
-                                <p class="text-3xl font-bold text-gray-900 mt-2" id="totalRequirements">0</p>
+                                <p class="text-sm font-medium text-orange-700">External Systems</p>
+                                <p class="text-3xl font-bold text-orange-600 mt-2" id="externalSystems">0</p>
                             </div>
-                            <div class="bg-purple-100 rounded-full p-3">
-                                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            <div class="bg-orange-100 rounded-full p-3">
+                                <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
                                 </svg>
                             </div>
                         </div>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="mini-stat bg-green-50 p-2 rounded">
+                                <span class="text-green-700 font-medium">Active: </span>
+                                <span class="text-green-800 font-bold" id="externalActiveSystems">0</span>
+                            </div>
+                            <div class="mini-stat bg-blue-50 p-2 rounded">
+                                <span class="text-blue-700 font-medium">Dev: </span>
+                                <span class="text-blue-800 font-bold" id="externalDevelopSystems">0</span>
+                            </div>
+                            <div class="mini-stat bg-yellow-50 p-2 rounded">
+                                <span class="text-yellow-700 font-medium">Review: </span>
+                                <span class="text-yellow-800 font-bold" id="externalReviewSystems">0</span>
+                            </div>
+                            <div class="mini-stat bg-purple-50 p-2 rounded">
+                                <span class="text-purple-700 font-medium">Plan: </span>
+                                <span class="text-purple-800 font-bold" id="externalPlanningSystems">0</span>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="stat-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm font-medium text-gray-600">Completion Rate</p>
-                                <p class="text-3xl font-bold text-blue-600 mt-2" id="completionRate">0%</p>
-                            </div>
-                            <div class="bg-yellow-100 rounded-full p-3">
-                                <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                                </svg>
-                            </div>
-                        </div>
+                <!-- Charts Section -->
+                <div class="section-header mb-6">
+                    <div class="section-title">
+                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        System Status Distribution
                     </div>
+                    <p class="text-sm text-slate-600 mt-1">Visual breakdown of system statuses across different categories</p>
                 </div>
 
                 <!-- Charts -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Systems by Status</h3>
-                        <canvas id="systemsStatusChart"></canvas>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Overall Systems by Status -->
+                    <div class="chart-card bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="chart-title text-gray-900">
+                            <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                            Overall Systems by Status
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="systemsStatusChart"></canvas>
+                        </div>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Requirements by Status</h3>
-                        <canvas id="requirementsStatusChart"></canvas>
+                    <!-- Internal Systems by Status -->
+                    <div class="chart-card bg-white rounded-xl shadow-sm border border-green-200 p-6">
+                        <h3 class="chart-title text-green-800">
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            Internal Systems by Status
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="internalSystemsStatusChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- External Systems by Status -->
+                    <div class="chart-card bg-white rounded-xl shadow-sm border border-orange-200 p-6">
+                        <h3 class="chart-title text-orange-800">
+                            <div class="w-3 h-3 rounded-full bg-orange-500"></div>
+                            External Systems by Status
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="externalSystemsStatusChart"></canvas>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Systems Table with Requirements -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Systems Overview with Requirements Progress</h3>
-                    <div id="systemsOverviewTable" class="overflow-x-auto"></div>
+                <!-- Systems Overview Section -->
+                <div class="section-header mb-6">
+                    <div class="section-title">
+                        <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Systems Overview
+                    </div>
+                    <p class="text-sm text-slate-600 mt-1">Detailed breakdown of internal and external systems</p>
+                </div>
+
+                <!-- Systems Overview Tables -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Internal Systems Overview -->
+                    <div class="overview-card bg-white rounded-xl shadow-sm border border-green-200 p-6">
+                        <h3 class="text-lg font-semibold text-green-800 mb-4 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            Internal Systems Overview
+                        </h3>
+                        <div id="internalSystemsOverviewTable" class="overflow-x-auto"></div>
+                    </div>
+
+                    <!-- External Systems Overview -->
+                    <div class="overview-card bg-white rounded-xl shadow-sm border border-orange-200 p-6">
+                        <h3 class="text-lg font-semibold text-orange-800 mb-4 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
+                            </svg>
+                            External Systems Overview
+                        </h3>
+                        <div id="externalSystemsOverviewTable" class="overflow-x-auto"></div>
+                    </div>
                 </div>
             </div>
 
@@ -483,35 +792,34 @@
                     </div>
 
                     <!-- Search and Filter -->
-                    <div class="mb-4 flex gap-4">
+                    <div class="mb-4 flex flex-wrap gap-4">
                         <input 
                             type="text" 
                             id="systemsSearch" 
                             placeholder="Search systems..." 
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            class="flex-1 min-w-[300px] px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             onkeyup="app.filterSystems()"
                         >
                         <select 
                             id="systemsStatusFilter" 
                             class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                            onchange="app.filterSystems()"
+                            onchange="app.filterSystems()">
                         >
                             <option value="">All Status</option>
                             <option value="active">Active</option>
                             <option value="in-develop">In Development</option>
                             <option value="review">Review</option>
-                            <option value="planing">Planning</option>
+                            <option value="planning">Planning</option>
                             <option value="retired">Retired</option>
                         </select>
                         <select 
-                            id="systemsCategoryFilter" 
+                            id="systemsTypeFilter" 
                             class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                             onchange="app.filterSystems()"
                         >
-                            <option value="">All Categories</option>
-                            <option value="core">Core</option>
-                            <option value="support">Support</option>
-                            <option value="infrastructure">Infrastructure</option>
+                            <option value="">All Types</option>
+                            <option value="internal">Internal</option>
+                            <option value="external">External</option>
                         </select>
                     </div>
 
@@ -531,12 +839,12 @@
                     </div>
 
                     <!-- Search and Filter -->
-                    <div class="mb-4 flex gap-4">
+                    <div class="mb-4 flex flex-wrap gap-4">
                         <input 
                             type="text" 
                             id="requirementsSearch" 
                             placeholder="Search requirements..." 
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            class="flex-1 min-w-[300px] px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             onkeyup="app.filterRequirements()"
                         >
                         <select 

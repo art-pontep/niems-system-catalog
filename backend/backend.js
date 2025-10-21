@@ -6,13 +6,13 @@
  */
 
 /* -------------------------------------------------------------------------- */
-/* CONFIGURATION                               */
+/*                                CONFIGURATION                               */
 /* -------------------------------------------------------------------------- */
 
 const CONFIG = {
   // 🔧 REQUIRED: Update these values
   SHEET_ID: "<YOUR_SPREADSHEET_ID>", // ✅ Replace with your actual Spreadsheet ID
-  CLIENT_ID: "<YOUR_CLIENT_ID>.apps.googleusercontent.com", // ✅ Replace with your actual Client ID
+  CLIENT_ID: "<YOUR_CLIENT_ID>", // ✅ Replace with your actual Client ID
   
   // 🛡️ SECURITY: Authorized users and origins
   ALLOWED_USERS: [
@@ -56,7 +56,7 @@ const CONFIG = {
 };
 
 /* -------------------------------------------------------------------------- */
-/*                                 ENTRY POINTS                                */
+/*                                 ENTRY POINTS                               */
 /* -------------------------------------------------------------------------- */
 
 /**
@@ -209,12 +209,12 @@ function doGet(e) {
       health: "GET /?action=health",
       api: "POST / with JSON body"
     },
-    documentation: "https://github.com/art-pontep/system-catalog/blob/main/postman/API_DOCUMENTATION.md"
+    documentation: "https://github.com/art-pontep/niems-system-catalog/blob/main/postman/API_DOCUMENTATION.md"
   });
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                    CRUD API                                 */
+/*                                    CRUD API                                */
 /* -------------------------------------------------------------------------- */
 
 /**
@@ -473,6 +473,7 @@ function handleDeleteRequest(sheet, headers, dataRows, data, user) {
 /**
  * Deletes all requirements associated with a system ID
  */
+
 function deleteAssociatedRequirements(systemID, user) {
   const REQUIREMENTS_SHEET_NAME = "Requirements";
   const ss = SpreadsheetApp.openById(CONFIG.SHEET_ID);
@@ -496,7 +497,7 @@ function deleteAssociatedRequirements(systemID, user) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                              AUTH + RATE LIMITING                           */
+/*                              AUTH + RATE LIMITING                          */
 /* -------------------------------------------------------------------------- */
 
 /**
@@ -758,7 +759,7 @@ function logAuthEvent(user, action, status, additionalInfo = {}) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                UTILITY FUNCTIONS                            */
+/*                                UTILITY FUNCTIONS                           */
 /* -------------------------------------------------------------------------- */
 
 /**

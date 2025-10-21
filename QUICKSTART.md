@@ -96,7 +96,7 @@ git init
 git add .
 git commit -m "Initial commit"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/system-catalog.git
+git remote add origin https://github.com/YOUR_USERNAME/niems-system-catalog.git
 git push -u origin main
 
 # 4. Enable GitHub Pages
@@ -108,7 +108,7 @@ git push -u origin main
 # 6. Check deployment
 # Actions tab → Deploy to GitHub Pages
 # Wait 2-3 minutes
-# Visit: https://YOUR_USERNAME.github.io/system-catalog/
+# Visit: https://YOUR_USERNAME.github.io/niems-system-catalog/
 ```
 
 ---

@@ -185,22 +185,56 @@ class App {
      * Render dashboard
      */
     renderDashboard() {
-        // Update stats
+        // Calculate various stats
+        const totalSystems = this.systems.length;
         const activeSystems = this.systems.filter(s => s['Overall Status'] === 'active').length;
-        const doneRequirements = this.requirements.filter(r => r.Status === 'done').length;
-        const totalRequirements = this.requirements.length;
-        const completionRate = totalRequirements > 0 ? Math.round((doneRequirements / totalRequirements) * 100) : 0;
+        const developSystems = this.systems.filter(s => s['Overall Status'] === 'in-develop').length;
+        const reviewSystems = this.systems.filter(s => s['Overall Status'] === 'review').length;
+        const planningSystems = this.systems.filter(s => s['Overall Status'] === 'planning').length;
+        
+        const internalSystems = this.systems.filter(s => s['System Type'] === 'internal').length;
+        const externalSystems = this.systems.filter(s => s['System Type'] === 'external').length;
+        
+        // Internal systems by status
+        const internalActiveSystems = this.systems.filter(s => s['System Type'] === 'internal' && s['Overall Status'] === 'active').length;
+        const internalDevelopSystems = this.systems.filter(s => s['System Type'] === 'internal' && s['Overall Status'] === 'in-develop').length;
+        const internalReviewSystems = this.systems.filter(s => s['System Type'] === 'internal' && s['Overall Status'] === 'review').length;
+        const internalPlanningSystems = this.systems.filter(s => s['System Type'] === 'internal' && s['Overall Status'] === 'planning').length;
+        
+        // External systems by status
+        const externalActiveSystems = this.systems.filter(s => s['System Type'] === 'external' && s['Overall Status'] === 'active').length;
+        const externalDevelopSystems = this.systems.filter(s => s['System Type'] === 'external' && s['Overall Status'] === 'in-develop').length;
+        const externalReviewSystems = this.systems.filter(s => s['System Type'] === 'external' && s['Overall Status'] === 'review').length;
+        const externalPlanningSystems = this.systems.filter(s => s['System Type'] === 'external' && s['Overall Status'] === 'planning').length;
 
-        document.getElementById('totalSystems').textContent = this.systems.length;
+        // Update main stats
+        document.getElementById('totalSystems').textContent = totalSystems;
         document.getElementById('activeSystems').textContent = activeSystems;
-        document.getElementById('totalRequirements').textContent = totalRequirements;
-        document.getElementById('completionRate').textContent = completionRate + '%';
+        document.getElementById('developSystems').textContent = developSystems;
+        document.getElementById('reviewSystems').textContent = reviewSystems;
+        document.getElementById('planningSystems').textContent = planningSystems;
+        
+        document.getElementById('internalSystems').textContent = internalSystems;
+        document.getElementById('externalSystems').textContent = externalSystems;
+        
+        // Update internal systems by status
+        document.getElementById('internalActiveSystems').textContent = internalActiveSystems;
+        document.getElementById('internalDevelopSystems').textContent = internalDevelopSystems;
+        document.getElementById('internalReviewSystems').textContent = internalReviewSystems;
+        document.getElementById('internalPlanningSystems').textContent = internalPlanningSystems;
+        
+        // Update external systems by status
+        document.getElementById('externalActiveSystems').textContent = externalActiveSystems;
+        document.getElementById('externalDevelopSystems').textContent = externalDevelopSystems;
+        document.getElementById('externalReviewSystems').textContent = externalReviewSystems;
+        document.getElementById('externalPlanningSystems').textContent = externalPlanningSystems;
 
-        // Update charts
+        // Update charts with new layout
         chartsComponent.updateCharts(this.systems, this.requirements);
 
-        // Update systems overview table
-        tableComponent.renderSystemsOverviewTable(this.systems, this.requirements);
+        // Update systems overview tables
+        tableComponent.renderInternalSystemsOverviewTable(this.systems.filter(s => s['System Type'] === 'internal'), this.requirements);
+        tableComponent.renderExternalSystemsOverviewTable(this.systems.filter(s => s['System Type'] === 'external'), this.requirements);
     }
 
     /**
@@ -265,22 +299,24 @@ class App {
     filterSystems() {
         const search = document.getElementById('systemsSearch').value.toLowerCase();
         const statusFilter = document.getElementById('systemsStatusFilter').value;
-        const categoryFilter = document.getElementById('systemsCategoryFilter').value;
+        const typeFilter = document.getElementById('systemsTypeFilter').value;
 
         this.filteredSystems = this.systems.filter(system => {
             // Search filter
             const matchesSearch = !search || 
                 (system.Name || '').toLowerCase().includes(search) ||
                 (system.ID || '').toLowerCase().includes(search) ||
-                (system.Description || '').toLowerCase().includes(search);
+                (system.Description || '').toLowerCase().includes(search) ||
+                (system['Business Owner'] || '').toLowerCase().includes(search) ||
+                (system['Technical Owner'] || '').toLowerCase().includes(search);
 
             // Status filter
             const matchesStatus = !statusFilter || system['Overall Status'] === statusFilter;
-            
-            // Category filter
-            const matchesCategory = !categoryFilter || system.Category === categoryFilter;
 
-            return matchesSearch && matchesStatus && matchesCategory;
+            // Type filter (Internal/External)
+            const matchesType = !typeFilter || system['System Type'] === typeFilter;
+
+            return matchesSearch && matchesStatus && matchesType;
         });
 
         this.renderSystems();

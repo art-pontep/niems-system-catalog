@@ -1,7 +1,7 @@
 # 📁 System Catalog Dashboard - Complete Project Structure
 
 ```
-system-catalog/
+niems-system-catalog/
 │
 ├── 📄 index.html                           # Main HTML entry point
 ├── 📖 README.md                            # Complete documentation

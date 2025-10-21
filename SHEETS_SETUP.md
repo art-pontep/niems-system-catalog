@@ -19,7 +19,7 @@
 | Description | รายละเอียดระบบ | Text | ❌ |
 | Business Owner | หน่วยงานเจ้าของ | Text | ❌ |
 | Technical Owner | ทีมเทคนิค | Text | ❌ |
-| Overall Status | สถานะ (active, in-develop, review, planing, retired) | Dropdown | ❌ |
+| Overall Status | สถานะ (active, in-develop, review, planning, retired) | Dropdown | ❌ |
 | Category | ประเภท (core, support, infrastructure) | Dropdown | ❌ |
 | System Type | ชนิด (internal, external) | Dropdown | ❌ |
 | Go Live Date | วันที่เปิดใช้งาน (YYYY-MM-DD) | Date | ❌ |
@@ -64,7 +64,7 @@ ID	System ID	Title	Type	Priority	Status	Created Date	Created By	Last Updated	Las
 - คลิกคอลัมน์ F (Overall Status)
 - Data → Data validation
 - Criteria: List of items
-- Values: `active,in-develop,review,planing,retired`
+- Values: `active,in-develop,review,planning,retired`
 
 **Category:**
 - คลิกคอลัมน์ G (Category)
